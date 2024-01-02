@@ -75,7 +75,7 @@ def main(args):
 
     # Create prompt template
     prompt_template = """
-    ### [INST] Je bent een expert in Oost-Vlaamse stad Oudenaarde. Antwoord enkel in het Nederlands. Gebruik de volgende context voor vragen te beantwoorden:
+    ### [INST] Je bent een expert in {topic}. Antwoord enkel in het Nederlands. Gebruik de volgende context voor vragen te beantwoorden:
 
     {context}
     
@@ -139,6 +139,7 @@ if __name__ == "__main__":
     parser.add_argument('--vectors-db', default='vectors/')
     parser.add_argument('--chunk-size', default=1024)
     parser.add_argument('--title', default="OudenaardeGPT")
+    parser.add_argument('--topic', default="de Oost-Vlaamse stad Oudenaarde")
     
     args = parser.parse_args()
     
