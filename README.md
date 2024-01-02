@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="pieter.ai/blog/2023/dutch-chat-toolkit/"><img src="https://raw.githubusercontent.com/context-labs/autodoc/master/assets/logo.png" alt="Logo Dutch RAG-based chat Toolkit" width="200"></a>
+  <a href="pieter.ai/blog/2023/dutch-chat-toolkit/"><img src="https://github.com/iPieter/dutch-chat-toolkit/blob/master/assets/logo.png?raw=true" alt="Logo Dutch RAG-based chat Toolkit" width="200"></a>
   <br>
 Dutch RAG-based Chat Toolkit
   <br>
