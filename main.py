@@ -130,7 +130,6 @@ def main(args):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
-                    prog='Dutch RAG Toolkit',
                     description='A Dutch retrieval-augmented chat toolkit',
                     epilog='Developed by Pieter Delobelle (KU Leuven)')
     
