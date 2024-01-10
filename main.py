@@ -92,8 +92,9 @@ def main(args):
 
     def format_history(chat_history):
         if chat_history and len(chat_history) > 0:
-            return (
-                + "\n".join([f"[INST]{human}[/INST]\n{ai}\n" for human, ai in chat_history])
+            return ( "[\INST]" +
+                "\n".join([f"[INST]\n{human}\n[/INST]\n{ai}\n" for human, ai in chat_history]) +
+                "[INST]"
             )
         else:
             return ""
@@ -105,8 +106,6 @@ def main(args):
     {context}
     
     {chat_history}
-
-    [INST]
     {question} 
     [/INST]"""
 
