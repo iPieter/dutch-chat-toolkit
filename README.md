@@ -31,6 +31,8 @@ This is a Python CLI toolkit to quickly create a chatbot with a web-based user i
 - 8-Bit inference for generation of >15 tokens/sec. 
 - Configurable prompts with sensible defaults.
 - high-quality generations with low VRAM usage thanks to Mistral-7B.
+- Supports various multilingual (e.g. Mistral-7B) and Dutch models (e.g. GEITje-7b-chat).
+- Built-in model-dependent templates for conversation.
 - Web-UI with Gradio.
 
 ## Get Started

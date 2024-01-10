@@ -92,43 +92,62 @@ def main(args):
 
     def format_history(chat_history):
         if chat_history and len(chat_history) > 0:
-            return ( "[\INST]" +
-                "\n".join([f"[INST]\n{human}\n[/INST]\n{ai}\n" for human, ai in chat_history]) +
-                "[INST]"
+            return (
+                "[\INST]"
+                + "\n".join(
+                    [f"[INST]\n{human}\n[/INST]\n{ai}\n" for human, ai in chat_history]
+                )
+                + "[INST]"
             )
         else:
             return ""
 
-    # Create prompt template
-    prompt_template = """
-    [INST] Je bent een expert in {topic}. Antwoord enkel in het Nederlands. Gebruik de volgende context voor vragen te beantwoorden:
+    def prepareInput(values: dict) -> str:
+        conversation: list = [
+            {
+                "role": "user" if "sys" not in tokenizer.chat_template else "system",
+                "content": f"Je bent een expert in {values['topic']}. Antwoord enkel in het Nederlands. Gebruik de volgende context voor vragen te beantwoorden:\n\n {values['context']}",
+            }
+        ]
 
-    {context}
-    
-    {chat_history}
-    {question} 
-    [/INST]"""
+        for human, ai in values["chat_history"]:
+            conversation.append({"role": "user", "content": human})
+            conversation.append({"role": "assistant", "content": ai})
 
-    prompt = PromptTemplate(
-        input_variables=["context", "question", "chat_history", "topic"],
-        template=prompt_template,
+        conversation.append({"role": "user", "content": values["question"]})
+        # Merge first two users
+        if "sys" not in tokenizer.chat_template:
+            conversation[0]["content"] = (
+                conversation[0]["content"] + "\n\n: " + conversation[1]["content"]
+            )
+            del conversation[1]
+
+        templated_history = tokenizer.apply_chat_template(
+            conversation,
+            add_generation_prompt=True,
+            tokenize=False,
+            system_message=True,
+        )
+
+        return templated_history
+
+    rag_chain = (
+        {
+            "context": itemgetter("message") | retriever | format_docs,
+            "question": itemgetter("message"),
+            "chat_history": itemgetter("chat_history"),
+            "topic": itemgetter("topic"),
+        }
+        | RunnableLambda(lambda x: prepareInput(x))
+        | llm
     )
-
-    llm_chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
-
-    rag_chain = {
-        "context": itemgetter("message") | retriever | format_docs,
-        "question": itemgetter("message"),
-        "chat_history": itemgetter("chat_history") | RunnableLambda(format_history),
-        "topic": itemgetter("topic"),
-    } | llm_chain
 
     with gr.Blocks(css=CSS) as demo:
 
         def respond(message, chat_history):
             yield rag_chain.invoke(
                 {"message": message, "topic": args.topic, "chat_history": chat_history}
-            )["text"]
+            )
 
         chatbot = gr.ChatInterface(respond, title=args.title)
 
