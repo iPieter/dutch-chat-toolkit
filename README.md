@@ -75,8 +75,17 @@ The `--topic` flag will be used as part of a prompt, so keep in mind to make sur
 Je bent een expert in {topic}.
 ```
 
+### Running different models
+By default, we use Mistral-7B, but different models are also possible, for instance the Dutch GEITje model:
+
+```bash
+python main.py --model-name Rijgersberg/GEITje-7B-chat-v2
+```
+
+Note that some models will require a different prompt format. GEITje is a Mistral-7B derivative, so it uses the same `[INST]` tokens. 
+
 ### Changing model storage location
-The toolkit uses two models, RobBERT and Falcon, which requires ~15 GB of free space. You can change the storage location using the Hugging Face home before running the toolkit.
+The toolkit uses two models, RobBERT and Mistral-7B, which requires ~15 GB of free space. You can change the storage location using the Hugging Face home before running the toolkit.
 
 ```bash
 export HF_HOME=/your/path
@@ -98,5 +107,9 @@ python main.py
 
 ## Contributing
 Always welcome to contribute. Just open a pull request or an issue.
+
+In particular the following features are welcome:
+- Processing the scraped websites with an LLM to clean HTML artifacts.
+- Summarizing the question that a user asks and using that for more accurate retrieval instead of embedding the question.
 
 The demo is about Oudenaarde, but try to keep this part modular so users can change that easily.
