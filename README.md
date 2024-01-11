@@ -35,6 +35,8 @@ This is a Python CLI toolkit to quickly create a chatbot with a web-based user i
 - Built-in model-dependent templates for conversation.
 - Web-UI with Gradio.
 
+![Screenshot of the Web-UI](assets/screenshot.png)
+
 ## Get Started
 
 ### Device requirements
